@@ -6,18 +6,7 @@
 
 float x,y,Radius;
 float xx=0,yy=Radius;
-void make(int xx,int yy,int x,int y)
-{
 
-      glVertex2f(xx+x,yy+y);
-      glVertex2f(xx-x,yy+y);
-      glVertex2f(xx+x,yy-y);
-      glVertex2f(xx-x,yy-y);
-      glVertex2f(xx+y,yy+x);
-      glVertex2f(xx-y,yy+x);
-      glVertex2f(xx+y,yy-x);
-      glVertex2f(xx-y,yy-x);
-}
 
 void display()
 {
@@ -61,6 +50,7 @@ void display()
     glutSwapBuffers();
 
 }
+
 
 int main(int argc,char **argv)
 {
