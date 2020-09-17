@@ -3,17 +3,18 @@
 #include<GL/glut.h>
 #include<math.h>
 #include<stdio.h>
+#define float int
+int xx,yy,Radius;
 
-float x,y,Radius;
-float xx=0,yy=Radius;
 
 
 void display()
 {
+    int x=0,y=Radius;
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
     gluOrtho2D(-100,100,-100,100);
-    glColor3d(0,1,0);
+    glColor3d(1,1,1);
     glBegin(GL_POLYGON);
 
     int distance=3-2*Radius;
@@ -55,10 +56,10 @@ void display()
 int main(int argc,char **argv)
 {
    printf("Enter Radius of the Circle\n");
-   scanf("%f",&Radius);
+   scanf("%d",&Radius);
    printf("Enter Coordinates of the Circle\n");
-   scanf("%f",&x);
-   scanf("%f",&y);
+   scanf("%d",&xx);
+   scanf("%d",&yy);
   glutInit(&argc,argv);
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
   glutInitWindowPosition(100,200);
