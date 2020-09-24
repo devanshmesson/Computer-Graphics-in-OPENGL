@@ -6,13 +6,8 @@
 #include <GL/glut.h>
 
 using namespace std;
-int n,a,b;
+int n,a,b,choice=1,maxy=INT_MIN,maxx=INT_MIN,minx=INT_MAX,miny=INT_MAX;
 vector<pair<int,int>>v;
-void delay(float ms)
-{
-    clock_t goal = ms + clock();
-    while(goal>clock());
-}
 
 void init(){
     glClearColor(1.0,1.0,1.0,1.0);
@@ -20,19 +15,39 @@ void init(){
     gluOrtho2D(0,640,0,480);
 }
 
-void bound_it(int x, int y, float* fillColor, float* bc)
+void boundaryfill(int x, int y, float* fillColor, float* boundaryColor)
 {
+    if(y>=minx && y<=maxy && x>=minx && x<=maxx)
+    {
     float color[3];
     glReadPixels(x,y,1.0,1.0,GL_RGB,GL_FLOAT,color);
-    if((color[0]!=bc[0] || color[1]!=bc[1] || color[2]!=bc[2])&&(color[0]!=fillColor[0] || color[1]!=fillColor[1] || color[2]!=fillColor[2])){glColor3f(fillColor[0],fillColor[1],fillColor[2]);
+    if((color[0]!=boundaryColor[0] || color[1]!=boundaryColor[1] || color[2]!=boundaryColor[2])&&(color[0]!=fillColor[0] || color[1]!=fillColor[1] || color[2]!=fillColor[2]))
+    {
+        glColor3f(fillColor[0],fillColor[1],fillColor[2]);
         glBegin(GL_POINTS);
-            glVertex2i(x,y);
+        glVertex2i(x,y);
         glEnd();
         glFlush();
-        bound_it(x+1,y,fillColor,bc);
-        bound_it(x-1,y,fillColor,bc);
-        bound_it(x,y+1,fillColor,bc);
-        bound_it(x,y-1,fillColor,bc);
+        if(choice==0)
+        {
+        boundaryfill(x+1,y,fillColor,boundaryColor);
+        boundaryfill(x-1,y,fillColor,boundaryColor);
+        boundaryfill(x,y+1,fillColor,boundaryColor);
+        boundaryfill(x,y-1,fillColor,boundaryColor);
+        }
+        else if(choice==1)
+        {
+         boundaryfill(x+1,y,fillColor,boundaryColor);
+         boundaryfill(x-1,y,fillColor,boundaryColor);
+         boundaryfill(x,y+1,fillColor,boundaryColor);
+         boundaryfill(x,y-1,fillColor,boundaryColor);
+
+         boundaryfill(x+1,y+1,fillColor,boundaryColor);
+         boundaryfill(x-1,y+1,fillColor,boundaryColor);
+         boundaryfill(x-1,y-1,fillColor,boundaryColor);
+         boundaryfill(x+1,y-1,fillColor,boundaryColor);
+        }
+    }
     }
 }
 
@@ -42,14 +57,15 @@ void mouse(int btn, int state, int x, int y){
     {
         if(state==GLUT_DOWN)
         {
-            float bCol[] = {1,0,0};
+            float boundaryColor[] = {1,0,0};
             float color[] = {0,0,1};
-            bound_it(x,y,color,bCol);
+            boundaryfill(x,y,color,boundaryColor);
         }
     }
 }
 
-void world(){
+void display()
+{
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1,0,0);
     glBegin(GL_LINE_LOOP);
@@ -71,13 +87,19 @@ int main(int argc, char** argv)
     {
         scanf("%d%d",&a,&b);
         v.push_back({a,b});
+        if(maxy<b)maxy=b;
+        if(maxx<a)maxx=a;
+        if(miny>b)miny=b;
+        if(minx>a)minx=a;
     }
+    printf("Press 0 for 4-Connected\nPress 1 for 8-Connected:\n");
+    scanf("%d",&choice);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
     glutInitWindowSize(640,480);
     glutInitWindowPosition(200,200);
-    glutCreateWindow("Many Amaze Very GL WOW");
-    glutDisplayFunc(world);
+    glutCreateWindow("Boundary Fill Algorith,");
+    glutDisplayFunc(display);
     glutMouseFunc(mouse);
     init();
     glutMainLoop();
