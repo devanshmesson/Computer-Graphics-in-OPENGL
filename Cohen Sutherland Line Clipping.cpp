@@ -6,6 +6,10 @@ Test Case1:
 Test Case2:
 100 0 200 100
 10 10 170 120
+
+Test Case3:
+100 0 200 100
+50 0 50 100
 */
 
 #include <windows.h>
@@ -81,11 +85,12 @@ int main(int argc,char** argv)
          flag=1;
          break;
         }
-       /* else if((code1 && code2)!=0) //both outside the window
+        else if((code1 && code2)!=0) //both outside the window
         {
+            cout<<"Line cant be clipped"<<endl;
             cout<<"(code1 && code2)="<<(code1 && code2)<<endl;
             break;
-        }*/
+        }
         else
         {
             int x,y,found;
