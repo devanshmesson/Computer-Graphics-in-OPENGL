@@ -25,29 +25,42 @@ static void resize(int width, int height)
 
 void draw_original_polygon()  //Drawing Original Polygon
 {
-  glBegin(GL_POLYGON);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glColor3f(0.5, 0.0, 0.1); //Maroonish_red colour
+    glViewport(0, 0, 640, 480);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-100,100,-100,100, 2.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity() ;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBegin(GL_POLYGON);
+    glColor3f(0.5, 0.0, 0.1); //Maroonish_red colour
    for(auto z:point)
     {
       int x=get<0>(z),y=get<1>(z),zz=get<2>(z);
-      glPushMatrix();
       glVertex3f(x,y,zz);
-      glPopMatrix();
-
     }
-  glutSwapBuffers();
+   glEnd();
+  glFlush();
 }
 
 void draw_translated_polygon() //Drawing translated polygon
 {
-  glBegin(GL_POLYGON);
+    glViewport(0, 0, 640, 480);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-100,100,-100,100, 2.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity() ;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBegin(GL_POLYGON);
+    //glColor3f(0.5, 0.0, 0.1); //Maroonish_red colour
   glColor3f(0.0, 0.4, 0.75); //Blue color
   for (int i = 0; i < edges; i++)
   {
     glVertex3f(get<0>(point[i])+transX,get<1>(point[i])+transY,get<2>(point[i])+transZ);
   }
   glEnd();
+  glFlush();
 }
 
 void myInit(void)
@@ -57,18 +70,27 @@ void myInit(void)
   glColor3f(1,1,1);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluOrtho2D(-500,500,-500,500);
+ glFrustum(-100,100,-100,100, 2.0, 100.0);
  glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity() ;
+glLoadIdentity() ;
+ glFrustum(-100,100,-100,100, 2.0, 100.0);
 }
 void draw_rotated_polygon()
 {
     /*
+    Rotation angle-5
     Test case:
-    100 0 50
-    300 0 70
-    200 100 90
+    -10 30 20
+     20 30 50
+     30 50 -20
     */
+    glViewport(0, 0, 640, 480);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-100,100,-100,100, 2.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity() ;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBegin(GL_POLYGON);
     glColor3f(0.0, 0.4, 0.75); //Blue color
 
@@ -99,12 +121,21 @@ void draw_rotated_polygon()
 
     }
   glEnd();
+  glFlush();
 
 }
 
 void draw_scaled_polygon()
 {
-  glBegin(GL_POLYGON);
+  glViewport(0, 0, 640, 480);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-100,100,-100,100, 2.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity() ;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBegin(GL_POLYGON);
+    glColor3f(0.5, 0.0, 0.1); //Maroonish_red colour
   glColor3f(0.0, 0.4, 0.75); //Blue color
 
   //Scale every vertex of the figure
@@ -115,11 +146,20 @@ void draw_scaled_polygon()
     }
 
   glEnd();
+  glFlush();
 }
 
 void draw_reflected_about_plane_polygon()
 {
-  glBegin(GL_POLYGON);
+  glViewport(0, 0, 640, 480);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-100,100,-100,100, 2.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity() ;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBegin(GL_POLYGON);
+    //glColor3f(0.5, 0.0, 0.1); //Maroonish_red colour
   glColor3f(0.0, 0.4, 0.75); //Blue color
   //Reflect every vertex of the figure
     for(auto z:point)
@@ -131,12 +171,21 @@ void draw_reflected_about_plane_polygon()
     }
 
   glEnd();
+  glFlush();
 }
 
 
 void draw_sheared_polygon()
 {
-  glBegin(GL_POLYGON);
+    glViewport(0, 0, 640, 480);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-100,100,-100,100, 2.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity() ;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBegin(GL_POLYGON);
+    //glColor3f(0.5, 0.0, 0.1); //Maroonish_red colour
   glColor3f(0.0, 0.4, 0.75); //Blue color
   //Shear every vertex of the figure
     for(auto z:point)
@@ -164,21 +213,19 @@ void draw_sheared_polygon()
       glVertex3f(plot_x,plot_y,plot_z);
     }
   glEnd();
+  glFlush();
 
 }
 
 void display()
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  glColor3f(1, 1, 1);
   draw_original_polygon();
-  /*if(choice==1) draw_translated_polygon();
+  if(choice==1) draw_translated_polygon();
   else if(choice==2)draw_rotated_polygon();
   else if(choice==3)draw_scaled_polygon();
   else if(choice==4)draw_reflected_about_plane_polygon();
-  else if(choice==5)draw_sheared_polygon();*/
-  glFlush();
+  else if(choice==5)draw_sheared_polygon();
+ glutSwapBuffers();
 }
 
 
@@ -186,6 +233,7 @@ void display()
 
 int main(int argc, char** argv)
 {
+
   cout<<"1.Translation"<<endl;
   cout<<"2.Rotation"<<endl;
   cout<<"3.Scaling"<<endl;
@@ -223,38 +271,38 @@ int main(int argc, char** argv)
   }
   else if(choice==4)
   {
-    cout<<"Press 'x' for Reflection about xy-plane and Press 'y' for Reflection about yz-plane and Press 'z' for Reflection about xz-plane  "<<endl;
+    cout<<"Press 'x' for Reflection about xy-plane\nPress 'y' for Reflection about yz-plane\nPress 'z' for Reflection about xz-plane  "<<endl;
     cin>>reflex;
   }
 
   else if(choice==5)
   {
-     cout<<"Press 'x' for shearing about x-axis and Press 'y' for shearing about y-axis and Press 'z' for shearing about z-axis "<<endl;
+     cout<<"Press 'x' for shearing about x-axis\nPress 'y' for shearing about y-axis\nPress 'z' for shearing about z-axis "<<endl;
     cin>>shear;
     if(shear=='x')
     {
-    cout<<"Shearing parameter towards Y direction";
+    cout<<"Shearing parameter towards Y direction:";
     cin>>shy;
     cout<<endl;
-    cout<<"Shearing parameter towards Z direction";
+    cout<<"Shearing parameter towards Z direction:";
     cin>>shz;
     cout<<endl;
     }
     else if(shear=='y')
     {
-    cout<<"Shearing parameter towards X direction";
+    cout<<"Shearing parameter towards X direction:";
     cin>>shx;
     cout<<endl;
-    cout<<"Shearing parameter towards Z direction";
+    cout<<"Shearing parameter towards Z direction:";
     cin>>shz;
     cout<<endl;
     }
     else if(shear=='z')
     {
-    cout<<"Shearing parameter towards X direction";
+    cout<<"Shearing parameter towards X direction:";
     cin>>shx;
     cout<<endl;
-    cout<<"Shearing parameter towards Y direction";
+    cout<<"Shearing parameter towards Y direction:";
     cin>>shy;
     cout<<endl;
     }
